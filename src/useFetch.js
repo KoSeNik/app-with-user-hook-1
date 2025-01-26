@@ -11,7 +11,9 @@ export const useFetch = (url, initialOptions = {}) => {
     setError(null);
 
     try {
-      const queryString = new URLSearchParams(options.params).toString();
+      const queryString = options.params
+        ? new URLSearchParams(options.params).toString()
+        : "";
       const fullUrl = queryString ? `${url}?${queryString}` : url;
 
       const response = await fetch(fullUrl, {
