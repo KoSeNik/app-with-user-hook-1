@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useFetch } from "./useFetch";
 
 function App() {
+  const { data, isLoading, error, refetch } = useFetch(
+    "https://jsonplaceholder.typicode.com/posts"
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="container">
+      <div>
+        <button
+          className="button"
+          onClick={() =>
+            refetch({
+              params: {
+                _limit: 3,
+              },
+            })
+          }
         >
-          Learn React
-        </a>
-      </header>
+          Перезапросить
+        </button>
+      </div>
+      {isLoading && "Загрузка..."}
+      {error && "Произошла ошибка"}
+      {data &&
+        !isLoading &&
+        data.map((item) => (
+          <div key={item.id} className="item">
+            {item.title}
+          </div>
+        ))}
     </div>
   );
 }
